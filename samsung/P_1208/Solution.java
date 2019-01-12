@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
  
 /**
@@ -10,20 +12,16 @@ import java.util.StringTokenizer;
  */
 public class Solution {
 	
-	public static void printArr(int[] arr) {
-		for(int i=0; i<arr.length; i++) {
-			System.out.print(arr[i] + " ");
-		}
-		System.out.println();
-	}
-	
     public static void main(String[] args) throws Exception{
-    	int cntDumps, min_idx, max_idx, cnt, tmp;
+    	int cntDumps, min_idx, max_idx, tmpDumps;
     	StringTokenizer st;
     	int[] counts = new int[100 + 1]; // 0 to 100
-    	BufferedReader reader = new BufferedReader(new FileReader("src\\input.txt"));
-//    	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    	for(int i=1; i<=1; i++) {
+//    	BufferedReader reader = new BufferedReader(new FileReader("src\\input.txt"));
+    	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    	BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    	for(int i=1; i<=10; i++) {
+    		max_idx = 0;
+    		min_idx = 0;
     		cntDumps = Integer.parseInt(reader.readLine());
     		st = new StringTokenizer(reader.readLine(), " ");
     		for(int j=1; j<=100; j++) {
@@ -32,27 +30,37 @@ public class Solution {
     		while(st.hasMoreTokens()) {
     			counts[Integer.parseInt(st.nextToken())]++;
     		}
-    		printArr(counts);
-    		tmp = 0;
-    		for(int j=counts.length-1; j>0; j--) {
+    		//down
+    		tmpDumps = cntDumps;
+    		for(int j=counts.length-1; j>1; j--) {
     			if(counts[j] != 0) {
-    				if(tmp + counts[j] < cntDumps) {
-    					tmp += counts[j];	
+    				if(tmpDumps - counts[j] >= 0) {
+    					tmpDumps -= counts[j];
+    					counts[j-1] += counts[j];
+//    					counts[j] = 0;
+    				}else {
+    					max_idx = j;
+    					break;
     				}
     			}
-    			
     		}
-    		
-    		min_idx = 0;
-    		max_idx = counts.length-1;
-    		while(counts[min_idx] == 0 && min_idx <= 100) {
-    			min_idx++;
+    		//up
+    		tmpDumps = cntDumps;
+    		for(int j=1; j<counts.length; j++) {
+    			if(counts[j] != 0) {
+    				if(tmpDumps - counts[j] >= 0) {
+    					tmpDumps -= counts[j];
+    					counts[j+1] += counts[j];
+//    					counts[j] = 0;
+    				}else {
+    					min_idx = j;
+    					break;
+    				}
+    			}
     		}
-    		while(counts[max_idx] == 0 && max_idx > 0) {
-    			min_idx--;
-    		}
-    		
-    		System.out.println("#" + i + " " + (max_idx - min_idx));
+    		bw.write("#" + i + " " + (max_idx - min_idx) + "\n");
     	}
+    	bw.close();
+    	reader.close();    	
     }
 }
