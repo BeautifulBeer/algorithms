@@ -29,7 +29,7 @@ public class Solution {
 				}
 			}
 			//check reach end
-			while(destRow > 0 && destCol >= 0 && destCol < 100) {
+			while(destRow > 0) {
 				if(direction == 0 && destCol - 1 >= 0 && arr[destRow][destCol-1] == 1) {
 					direction = 1;
 				}else if(direction == 0 && destCol + 1 < 100 && arr[destRow][destCol+1] == 1) {
