@@ -57,6 +57,8 @@ vector<int> solution(int m, int n, vector<vector<int>> picture) {
             map[i][j] = picture[i-1][j-1];
             if(map[i][j] == 0){
                 marked[i][j] = true;
+            }else{
+                marked[i][j] = false;
             }
         }
     }
